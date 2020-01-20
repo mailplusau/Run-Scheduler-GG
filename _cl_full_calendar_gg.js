@@ -254,14 +254,14 @@ function pageInit() {
 					// console.log(modal_notes);
 					body += modal_notes + '<br>';
 				}
-				body += '<table border="0" cellpadding="15" id="customer" class="display compact tablesorter table table-striped" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr><th><b>EDIT</b></th><th><b>CUSTOMER NAME</b></th><th class="col-sm-2"><b>SERVICE</b></th></tr></thead><tbody>';
+				body += '<table border="0" cellpadding="15" id="customer" class="display compact tablesorter table table-striped" cellspacing="0" style="width: 100%;"><thead style="color: white;background-color: #607799;"><tr><th><b>EDIT</b></th><th><b>CUSTOMER NAME</b></th><th class="col-sm-2"><b>SERVICE</b></th><th><b>STOP NOTES</b></th></tr></thead><tbody>';
 
 				for (var x = 0; x < event.services.length; x++) {
 
 					var split_name = event.services[x].customer_text.split('CLOSED - ');
 
 					if (isNullorEmpty(split_name[0])) {
-						body += '<tr style="color:#ad3a3a;"><td><button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-pencil edit_stop" data-serviceid="' + event.services[x].service_id + '"></button></td><td>' + event.services[x].customer_text + '</td><td>' + event.services[x].service_text + '</td></tr>';
+						body += '<tr style="color:#ad3a3a;"><td><button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-pencil edit_stop" data-serviceid="' + event.services[x].service_id + '"></button></td><td>' + event.services[x].customer_text + '</td><td>' + event.services[x].service_text + '</td><td>' + event.description[x] + '</td></tr>';
 					} else {
 						body += '<tr><td><button type="button" class="btn btn-sm btn-warning glyphicon glyphicon-pencil edit_stop" data-serviceid="' + event.services[x].service_id + '"></button></td><td>' + event.services[x].customer_text + '</td><td>' + event.services[x].service_text + '</td></tr>';
 					}
