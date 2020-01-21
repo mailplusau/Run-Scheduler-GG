@@ -271,7 +271,7 @@ function runPlanner(request, response) {
                 customer_id_text = searchResult.getValue("entityid", "CUSTRECORD_SERVICE_LEG_CUSTOMER", "GROUP");
                 customer_name_text = searchResult.getValue("companyname", "CUSTRECORD_SERVICE_LEG_CUSTOMER", "GROUP");
                 ncl = searchResult.getValue('custrecord_service_leg_non_cust_location', null, "GROUP");
-
+/*
                 if (!isNullorEmpty(stop_notes)) {
                     if (isNullorEmpty(ncl)) {
                         stop_notes = '</br><b>Stop Notes</b> - ' + stop_notes + '</br>';
@@ -282,7 +282,7 @@ function runPlanner(request, response) {
 
                 } else {
                     stop_notes = '';
-                }
+                }*/
 
                 freq_id = searchResult.getValue("internalid", "CUSTRECORD_SERVICE_FREQ_STOP", "GROUP");
                 freq_mon = searchResult.getValue("custrecord_service_freq_day_mon", "CUSTRECORD_SERVICE_FREQ_STOP", "GROUP");
