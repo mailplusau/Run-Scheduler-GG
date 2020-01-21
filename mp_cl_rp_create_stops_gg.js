@@ -166,7 +166,11 @@ $(document).on('click', '.add_stop', function(e) {
     $('.row_button').removeClass('hide');
     $('.edit_old_stop_section').addClass('hide');
     $('.add_new_stop_section').removeClass('hide');
-    $('#add_new_stop').attr('data-rowid', $(this).attr('data-newstop'))
+    $('#add_new_stop').attr('data-rowid', $(this).attr('data-newstop'));
+    $('#duration').val(0);
+    $('#duration-hours').val(0);
+    $('#duration-minutes').val(0);
+    $('#duration-seconds').val(0);
 });
 
 $(document).on('click', '.transfer_stop', function(e) {
@@ -178,7 +182,11 @@ $(document).on('click', '.transfer_stop', function(e) {
     $('.row_button').removeClass('hide');
     $('.edit_old_stop_section').addClass('hide');
     $('.add_new_stop_section').removeClass('hide');
-    $('#add_new_stop').attr('data-rowid', $(this).attr('data-newstop'))
+    $('#add_new_stop').attr('data-rowid', $(this).attr('data-newstop'));
+    $('#duration').val(0);
+    $('#duration-hours').val(0);
+    $('#duration-minutes').val(0);
+    $('#duration-seconds').val(0);
 });
 
 $(document).on('click', '.add_row', function(e) {
@@ -376,7 +384,7 @@ $(document).on('click', '#add_new_stop', function(e) {
 
     var add_stop_elem = document.getElementsByClassName("add_stop");
     // var edit_stop_elem = document.getElementsByClassName("edit_stop");
-    var trasnfer_stop_elem = document.getElementsByClassName("transfer_stop");
+    var transfer_stop_elem = document.getElementsByClassName("transfer_stop");
     var table_info_elem = document.getElementsByClassName("table_info");
     var table_duration_elem = document.getElementsByClassName("table_duration");
     var table_stop_name_elem = document.getElementsByClassName("table_stop_name");
@@ -397,12 +405,17 @@ $(document).on('click', '#add_new_stop', function(e) {
         return false;
     }
 
+    console.log('split_duration', split_duration);
+    if (split_duration.length == 3) {
+        var hours = parseInt(split_duration[0].split('h'));
+        var minutes = parseInt(split_duration[1].split('m'));
+        var seconds = parseInt(split_duration[2].split('s'));
 
-    var hours = parseInt(split_duration[0].split('h'));
-    var minutes = parseInt(split_duration[1].split('m'));
-    var seconds = parseInt(split_duration[2].split('s'));
-
-    if (hours == 0 && minutes == 0 && seconds == 0) {
+        if (hours == 0 && minutes == 0 && seconds == 0) {
+            showAlert('Please enter time spent at this stop');
+            return false;
+        }
+    } else if (duration == 0) {
         showAlert('Please enter time spent at this stop');
         return false;
     }
@@ -493,7 +506,7 @@ $(document).on('click', '#add_new_stop', function(e) {
     if ($('#transfer_question').is(':checked')) {
         var row_count = $('#services tbody > tr').length;
         if (transfer_position == 1) {
-            var new_row = '<tr><td class="first_col"><button class="btn btn-warning btn-sm transfer_stop glyphicon glyphicon-transfer" type="button" data-toggle="tooltip" data-placement="right" title="Add Row" data-newstop=""></button> <button class="btn btn-danger btn-sm delete_stop glyphicon glyphicon-trash" type="button" data-toggle="tooltip" data-placement="right" title="Delete Stop" data-oldstop="" data-newstop=""></button></td><td><textarea readonly class="form-control table_info"></textarea><input type="hidden" readonly class="form-control table_stop_name" /></td><td><input type="text" readonly class="form-control table_duration" data-oldstop="" value="" /></td></tr>';
+            var new_row = '<tr><td class="first_col"><button class="btn btn-warning btn-sm transfer_stop glyphicon glyphicon-transfer" type="button" data-toggle="tooltip" data-placement="right" title="Edit Transfer" data-newstop=""></button> <button class="btn btn-danger btn-sm delete_stop glyphicon glyphicon-trash" type="button" data-toggle="tooltip" data-placement="right" title="Delete Stop" data-oldstop="" data-newstop=""></button></td><td><textarea readonly class="form-control table_info"></textarea><input type="hidden" readonly class="form-control table_stop_name" /></td><td><input type="text" readonly class="form-control table_duration" data-oldstop="" value="" /></td></tr>';
             $('#services tr:eq(' + row_number + ')').before(new_row);
 
         } else {
@@ -502,6 +515,9 @@ $(document).on('click', '#add_new_stop', function(e) {
         }
 
     }
+
+    $('#services tr:eq(' + row_number + ')').find('.first_col').append(' <button class="btn btn-default btn-sm move_up glyphicon glyphicon-arrow-up" type="button" data-toggle="tooltip" data-placement="right" title="Move Up"></button><button class="btn btn-default btn-sm move_down glyphicon glyphicon-arrow-down" type="button" data-toggle="tooltip" data-placement="right" title="Move Down"></button>');
+
     updateRowCount();
     reset_all();
 });
@@ -509,7 +525,7 @@ $(document).on('click', '#add_new_stop', function(e) {
 $(document).on('click', '#edit_old_stop', function(e) {
     // var add_stop_elem = document.getElementsByClassName("add_stop");
     var edit_stop_elem = document.getElementsByClassName("edit_stop");
-    console.log('edit_stop_elem', edit_stop_elem);
+    //console.log('edit_stop_elem', edit_stop_elem);
     var table_info_elem = document.getElementsByClassName("table_info");
     var table_duration_elem = document.getElementsByClassName("table_duration");
     var table_stop_name_elem = document.getElementsByClassName("table_stop_name");
@@ -538,21 +554,25 @@ $(document).on('click', '#edit_old_stop', function(e) {
     }
 
     display_html += 'Notes: ' + $('#stop_notes').val();
+    console.log('display_html', display_html);
 
     var duration = $('#duration').val();
-    console.log(duration);
+    console.log('duration', duration);
     // duration = secondsToHms(duration);
 
 
     var split_duration = duration.split(',');
+    console.log('split_duration', split_duration);
+    console.log('split_duration.length', split_duration.length);
+    if (split_duration.length == 3) {
+        var hours = parseInt(split_duration[0].split('h'));
+        var minutes = parseInt(split_duration[1].split('m'));
+        var seconds = parseInt(split_duration[2].split('s'));
 
-    var hours = parseInt(split_duration[0].split('h'));
-    var minutes = parseInt(split_duration[1].split('m'));
-    var seconds = parseInt(split_duration[2].split('s'));
-
-    if (hours == 0 && minutes == 0 && seconds == 0) {
-        showAlert('Please enter time spent at this stop');
-        return false;
+        if (hours == 0 && minutes == 0 && seconds == 0) {
+            showAlert('Please enter time spent at this stop');
+            return false;
+        }
     }
 
     if ($('#transfer_question').is(':checked')) {
@@ -563,7 +583,7 @@ $(document).on('click', '#edit_old_stop', function(e) {
     }
 
 
-    hours = parseInt(split_duration[0].split('h'));
+    //hours = parseInt(split_duration[0].split('h'));
     if (!isNullorEmpty(split_duration[1])) {
         minutes = parseInt(split_duration[1].split('m'));
         seconds = parseInt(split_duration[2].split('s'));
@@ -584,6 +604,7 @@ $(document).on('click', '#edit_old_stop', function(e) {
 
     $('#services tr:eq(' + row_number + ')').find('.table_duration').val(duration);
     $('#services tr:eq(' + row_number + ')').find('.table_info').val(display_html);
+    //console.log($('#services tr:eq(' + row_number + ')').find('.table_info').val());
     $('#services tr:eq(' + row_number + ')').find('.table_info').attr('data-addresstype', $('option:selected', '#address_type').val());
     $('#services tr:eq(' + row_number + ')').find('.table_stop_name').attr('data-notes', $('#stop_notes').val());
     // $('#services tr:eq(' + row_number + ')').find('.table_info').attr('data-oldstop', null);
@@ -622,11 +643,11 @@ $(document).on('click', '#edit_old_stop', function(e) {
     if ($('#transfer_question').is(':checked')) {
         var row_count = $('#services tbody > tr').length;
         if (transfer_position == 1) {
-            var new_row = '<tr><td class="first_col"><button class="btn btn-success btn-sm transfer_stop glyphicon glyphicon-transfer" type="button" data-toggle="tooltip" data-placement="right" title="Add Row" data-newstop=""></button> <button class="btn btn-danger btn-sm delete_stop glyphicon glyphicon-trash" type="button" data-toggle="tooltip" data-placement="right" title="Delete Stop" data-oldstop="" data-newstop=""></button></td><td><textarea readonly class="form-control table_info"></textarea><input type="hidden" readonly class="form-control table_stop_name" /></td><td><input type="text" readonly class="form-control table_duration" data-oldstop="" value="" /></td></tr>';
+            var new_row = '<tr><td class="first_col"><button class="btn btn-success btn-sm transfer_stop glyphicon glyphicon-transfer" type="button" data-toggle="tooltip" data-placement="right" title="Add Transfer" data-newstop=""></button> <button class="btn btn-danger btn-sm delete_stop glyphicon glyphicon-trash" type="button" data-toggle="tooltip" data-placement="right" title="Delete Stop" data-oldstop="" data-newstop=""></button></td><td><textarea readonly class="form-control table_info"></textarea><input type="hidden" readonly class="form-control table_stop_name" /></td><td><input type="text" readonly class="form-control table_duration" data-oldstop="" value="" /></td></tr>';
             $('#services tr:eq(' + row_number + ')').before(new_row);
 
         } else {
-            var new_row = '<tr><td class="first_col"><button class="btn btn-success btn-sm transfer_stop glyphicon glyphicon-transfer" type="button" data-toggle="tooltip" data-placement="right" title="Add Row" data-newstop=""></button> <button class="btn btn-danger btn-sm delete_stop glyphicon glyphicon-trash" type="button" data-toggle="tooltip" data-placement="right" title="Delete Stop" data-oldstop="" data-newstop=""></button></td><<td><textarea readonly class="form-control table_info"></textarea><input type="hidden" readonly class="form-control table_stop_name" /></td><td><input type="text" readonly class="form-control table_duration" data-oldstop="" value="" /></td></tr>';
+            var new_row = '<tr><td class="first_col"><button class="btn btn-success btn-sm transfer_stop glyphicon glyphicon-transfer" type="button" data-toggle="tooltip" data-placement="right" title="Add Transfer" data-newstop=""></button> <button class="btn btn-danger btn-sm delete_stop glyphicon glyphicon-trash" type="button" data-toggle="tooltip" data-placement="right" title="Delete Stop" data-oldstop="" data-newstop=""></button></td><<td><textarea readonly class="form-control table_info"></textarea><input type="hidden" readonly class="form-control table_stop_name" /></td><td><input type="text" readonly class="form-control table_duration" data-oldstop="" value="" /></td></tr>';
             $('#services tr:eq(' + row_number + ')').after(new_row);
         }
 
@@ -681,6 +702,11 @@ $(document).on('change', '.address_type', function(e) {
         $('.stop_name_row').removeClass('hide');
         $('.stop_duration_row').removeClass('hide');
         $('.durationpicker-container').removeClass('hide');
+        /*        $('#duration').val(0);
+                $('#duration-hours').val(0);
+                $('#duration-minutes').val(0);
+                $('#duration-seconds').val(0);*/
+        console.log($('#duration').val());
         $('.stop_notes_row').removeClass('hide');
     } else if ($('option:selected', this).val() == 2) {
         $('.customer_address_row').addClass('hide');
@@ -690,6 +716,10 @@ $(document).on('change', '.address_type', function(e) {
         $('.stop_name_row').removeClass('hide');
         $('.stop_duration_row').removeClass('hide');
         $('.durationpicker-container').removeClass('hide');
+        /*        $('#duration').val(0);
+                $('#duration-hours').val(0);
+                $('#duration-minutes').val(0);
+                $('#duration-seconds').val(0);*/
         $('.stop_notes_row').removeClass('hide');
     }
     $('.transfer_row').removeClass('hide');
@@ -782,7 +812,7 @@ function saveRecord() {
     var return_value = validateLegsNumber();
     console.log('return value', return_value);
     if (return_value == false) {
-    	showAlert('Please enter a minimum of 2 stops');
+        showAlert('Please enter a minimum of 2 stops');
         return false;
     }
 
