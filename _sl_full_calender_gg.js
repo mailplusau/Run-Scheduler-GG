@@ -582,7 +582,7 @@ function runPlanner(request, response) {
         }
 
         nlapiLogExecution('DEBUG', 'stop_count', stop_count);
-        inlineQty += '<div class="se-pre-con"></div><div id="calendar"></div>';
+        inlineQty += '<div class="se-pre-con"></div><div id="calendar" style="font-size:small;"></div>';
 
 
         form.addField('preview_table', 'inlinehtml', '').setLayoutType('outsidebelow', 'startrow').setDefaultValue(inlineQty);
