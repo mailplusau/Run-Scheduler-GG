@@ -426,7 +426,7 @@ function createStops(request, response) {
 		form.addField('preview_table', 'inlinehtml', '').setLayoutType('startrow').setDefaultValue(inlineQty);
 
 
-		form.addSubmitButton('Submit');
+		form.addSubmitButton('Submit & Next');
 		form.addButton('back', 'Back', 'onclick_back()');
 		form.addButton('back', 'Reset', 'onclick_reset()');
 		form.addButton('main_page', 'Back to Main Page', 'onclick_mainpage()');
