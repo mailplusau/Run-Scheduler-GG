@@ -355,7 +355,7 @@ function scheduleRun(request, response) {
                                         }*/
 
                 } else {
-                    inlineQty += '<li role="presentation" class="active"><a href="#' + obj['stop_id'] + '" data-freq="" data-stopno="' + (i + 1) + '"><b>Stop ' + (i + 1) + ':</b> ' + obj['stop_name'] + '</a></li>';
+                    inlineQty += '<li role="presentation" class="active"><a href="#' + obj['stop_id'] + '" data-freq="" data-stopno="' + (i + 1) + '" style="background-color: rgb(50, 122, 183); color: white;"><b>Stop ' + (i + 1) + ':</b> ' + obj['stop_name'] + '</a></li>';
                 }
                 active_class = 'active';
             } else {

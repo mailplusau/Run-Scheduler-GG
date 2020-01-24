@@ -141,29 +141,35 @@ $(".nav-tabs").on("click", "li a", function(e) {
     var main_stop = $(this).attr('href');
     var main_stop_det = $(this);
     var freq_array = $(this).attr('data-freq');
-    console.log(main_stop);
+    console.log('main stop', main_stop);
     console.log('freq_array', freq_array);
     var error = false;
     var old_stored_run;
     var stored_run;
+    //$(this).css('background-color', '#8080809c');
 
     var exit = true;
     $(".tabs").each(function() {
         $(this).find(".nav-tabs li").each(function(index, element) {
             var stop_id = $(this).children('a').attr('href');
             console.log('stop_id: ' + stop_id);
-            console.log('Current Clicked tab' + main_stop_det.attr('class'));
-            console.log('tab seq ' + $(this).attr('class'));
+            $(this).children('a').css({
+                "background-color": "white",
+                "color": "#337ab7"
+            });
+            //console.log('Current Clicked tab' + main_stop_det.attr('class'));
+            //console.log('tab seq ' + $(this).attr('class'));
+            console.log($(this).attr('class'));
             if ($(this).attr('class') == 'active') {
-                // $(this).children('a').css('background-color', '#8080809c')
-                console.log('inside active tab')
+                //$(this).children('a').css('background-color', '#8080809c');
+                console.log('inside active tab');
                 stop_id = stop_id.split('#');
                 if (!isNullorEmpty(stop_id[1])) {
                     var table_id = '#services' + stop_id[1] + ' > tbody > tr';
                     var rows;
                     if (!isNullorEmpty($(table_id))) {
                         rows = $(table_id);
-                        console.log(rows.length);
+                        console.log('rows.length', rows.length);
                     }
 
                     if (rows.length == 1) {
@@ -176,7 +182,7 @@ $(".nav-tabs").on("click", "li a", function(e) {
 
                         var message = '';
 
-                        console.log('run ' + run)
+                        console.log('run ' + run);
                         console.log('service_time', service_time);
 
                         if (isNullorEmpty(run) || run == 0) {
@@ -211,11 +217,11 @@ $(".nav-tabs").on("click", "li a", function(e) {
                             console.log(main_stop_det);
                             main_stop_det.tab('show');
                             var main_stop_id = main_stop.split('#');
+                            console.log('old_stored_run', old_stored_run);
                             if (isNullorEmpty(old_stored_run)) {
                                 $('#' + main_stop_id[1]).find('#run' + main_stop_id[1]).val(stored_run);
                             }
                             exit = false;
-                            // $(this).children('a').css('background-color', '#8080809c')
 
 
                         }
@@ -275,7 +281,15 @@ $(".nav-tabs").on("click", "li a", function(e) {
                 }
             } else if (main_stop == stop_id && error != true) {
                 console.log('inside 3');
+                //$(this).children('a').css('background-color', '#8080809c');
                 $(this).children('a').tab('show');
+                //$(this).children('a').css('background-color', '#8080809c');
+
+                stop_id = stop_id.split('#');
+                old_stored_run = $('#' + stop_id[1]).find('#run' + stop_id[1]).attr('data-oldrun');
+                stored_run = $('#' + stop_id[1]).find('#run' + stop_id[1]).val();
+                console.log('stored_run', stored_run);
+                console.log('old_stored_run', old_stored_run);
 
                 if (isNullorEmpty(old_stored_run)) {
                     stop_id = stop_id.split('#');
@@ -294,6 +308,11 @@ $(".nav-tabs").on("click", "li a", function(e) {
             return false;
         }
     });
+    $(this).css({
+        "background-color": "rgb(50, 122, 183)",
+        "color": "white"
+    });
+
 });
 
 
@@ -982,10 +1001,10 @@ function saveRecord() {
                         error = true;
                     }
 
-/*                    if (error == true) {
-                        // $(this).children('a').css('background-color', '#337ab7')
-                        showAlert(message);
-                        exit = false;*/
+                    /*                    if (error == true) {
+                                            // $(this).children('a').css('background-color', '#337ab7')
+                                            showAlert(message);
+                                            exit = false;*/
                     //} 
                     else {
                         console.log('old_service_time: ' + $('#' + stop_id[1]).find('#service_time' + stop_id[1]).attr('data-oldtime'));
@@ -1091,10 +1110,10 @@ function saveRecord() {
                             }
 
 
-/*                            if (error == true) {
-                                // $(this).children('a').css('background-color', '#337ab7')
-                                showAlert(message);
-                                exit = false;*/
+                            /*                            if (error == true) {
+                                                            // $(this).children('a').css('background-color', '#337ab7')
+                                                            showAlert(message);
+                                                            exit = false;*/
                             //} 
                             else {
                                 if (freq_change == true || (run != old_run) || (service_time != old_service_time) || (earliest_time != old_earliest_time) || (latest_time != old_latest_time)) {
@@ -1145,10 +1164,10 @@ function saveRecord() {
         nlapiSetFieldValue('delete_freq', delete_freq_string)
     }
 
-    for (var i=0; i < freq_time_current_array.length; i++) {
-        if (freq_time_current_array[i+1] < freq_time_current_array[i]) {
+    for (var i = 0; i < freq_time_current_array.length; i++) {
+        if (freq_time_current_array[i + 1] < freq_time_current_array[i]) {
             error = true;
-            message += 'The service time of Stop ' + (i+2) + ' should exceed the service time of Stop ' + (i+1);
+            message += 'The service time of Stop ' + (i + 2) + ' should exceed the service time of Stop ' + (i + 1);
         }
     }
 
