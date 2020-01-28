@@ -292,7 +292,6 @@ $(".nav-tabs").on("click", "li a", function(e) {
                 console.log('old_stored_run', old_stored_run);
 
                 if (isNullorEmpty(old_stored_run)) {
-                    stop_id = stop_id.split('#');
                     $('#' + stop_id[1]).find('#run' + stop_id[1]).val(stored_run);
                 }
                 // $(this).children('a').css('background-color', '#337ab7');
